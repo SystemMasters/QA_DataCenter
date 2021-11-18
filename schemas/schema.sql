@@ -63,6 +63,5 @@ asker/answerer might be the same person (might wanna store the email, )
 
 
 /*  Execute this file from the command line by typing:
- *    mysql -u root < server/schema.sql
  *    mysql -u root < schemas/schema.sql
  *  to create the database and the tables.*/
