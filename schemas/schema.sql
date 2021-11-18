@@ -27,6 +27,7 @@ CREATE TABLE Answers (
   questionID FOREIGN KEY REFERENCES Questions(question_id)
 );
 
+
 CREATE TABLE Photos (
   id INT PRIMARY KEY AUTO_INCREMENT,
   url VARCHAR(255),
@@ -35,4 +36,8 @@ CREATE TABLE Photos (
 
 /* one photo can only refer to one answer */
 /* one answer can only refer to one question */
-/* one question can only refer to one product */
+/* one question can only refer to one product
+
+look at smallInt for url
+asker/answerer might be the same person (might wanna store the email, )
+*/

@@ -30,6 +30,7 @@ const QuestionsSchema = new mongoose.Schema({
 });
 
 // const MyModel = mongoose.model('ModelName', mySchema);
+// add more types, required
 const Question = mongoose.model('Question', QuestionsSchema);
 
 module.exports = {
