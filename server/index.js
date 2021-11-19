@@ -17,16 +17,23 @@ app.get('/', (req, res) => {
 app.get('/qa/questions/:product_id/:page/:count', async (req, res) => {
   const {product_id} = req.params;
   try {
-    const result = await Query.getQuestions(product_id, req, res);
-    console.log('-----', result);
-    res.send(result)
+    const questionList = await Query.getQuestions(product_id, req, res);
+    console.log('-----QuestionList', questionList);
+    res.send(questionList);
   } catch(err) {
     console.log(err)
   };
 });
 
-app.get('/qa/questions/:question_id/answers', (req, res) => {
-
+app.get('/qa/questions/:question_id/answers', async (req, res) => {
+  const {question_id} = req.params;
+  try {
+    const answerList = await Query.getAnswers(question_id, req, res);
+    console.log('-----answerList', answerList);
+    res.send(answerList);
+  } catch(err) {
+    console.log('err from getAnswers route', err)
+  }
 });
 
 app.listen(port, () => {
