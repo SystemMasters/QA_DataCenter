@@ -1,12 +1,24 @@
 const db = require('../db/dbConnection.js');
 
+// const getQuestions = (productId) => {
+//   const sql = `select * from questions limit 5`;
+//   console.log('db----', db)
+//   db.promise().query(
+//     sql
+//   ).then(res => {console.log(res[0])});
+// }
+
 const getQuestions = (productId) => {
-  const sql = `select * from questions limit 5`;
-  console.log('db----', db)
-  db.query(
-    sql
-  ).then(res => {console.log(res)});
+  const sql = `select * from questions where productId=${productId} limit 5`;
+  db().then(connection => connection.query(sql).then(res => {console.log(res[0])}));
 }
+
+// getQuestions();
+
+
+
+
+
 // const getQuestions = (productId) => {
 //   const sql = `select * from questions limit 5`;
 //   dbConnection.query (

@@ -1,67 +1,40 @@
 require('dotenv').config();
-
-// async function db() {
-//   const mysql = require('mysql2/promise');
-//   try{
-//     const connection = await mysql.createConnection({
-//       host: 'localhost',
-//       user: 'root',
-//       database: 'QA_Data'
-//     });
-//     return connection;
-//     // return connection.query(
-//     //   'SELECT * FROM Questions limit 3',
-//     //   (err, results) => {
-//     //     if (err) {
-//     //       console.log(err);
-//     //       return;
-//     //     }
-//     //     console.log('Connection is created------------');
-//     //   }
-//     // );
-//   } catch(err) {console.log('err is', err)}
-// }
-
 const mysql = require('mysql2');
-const db2 = async () => {
-  const pool = mysql.createConnection({
+
+
+// const connection = mysql.createConnection({
+//     host: process.env.dbHost,
+//     user: process.env.dbUser,
+//     database: process.env.dbName,
+//     password: process.env.dbPassword
+// })
+// // connection.promise().query('SELECT * FROM Questions limit 3')
+// //   .then((results) => console.log('this is resutls', results[0]))
+// //   .catch(err => console.log('this is an err', err));
+
+// module.exports = connection;
+
+
+const db = async () => {
+  const mysql = require('mysql2/promise');
+  const connection = await mysql.createConnection({
     host: process.env.dbHost,
     user: process.env.dbUser,
     database: process.env.dbName,
     password: process.env.dbPassword
   });
-    // now get a Promise wrapped instance of that pool
-  const promisePool = await pool.promise();
-  console.log('data is running')
-  return promisePool;
-  // const [rows, fields] = await promisePool.execute('select ?+? as sum', [2, 2]);
-  // console.log('data is running', rows, fields)
+  // const result = await connection.query('SELECT * FROM Questions limit 3')
+  // console.log(result[0]);
+  // return result[0];
+  return connection;
 }
 
-const db = db2.connection();
+// db().then(result =>
+//   result.query('SELECT * FROM Questions limit 3').then(result1 => console.log(result1[0]))
+// )
+
 module.exports = db;
 
-
-// const mysql = require('mysql2');
-
-// const connection = mysql.createConnection({
-//   host: 'localhost',
-//   user: 'root',
-//   database: 'QA_Data'
-// });
-
-// connection.query(
-//   'SELECT * FROM Questions limit 3',
-//   (err, results) => {
-//     if (err) {
-//       console.log(err);
-//       return;
-//     }
-//     console.log('Connection is created------------');
-//   }
-// );
-
-// module.exports = connection;
 
 
 

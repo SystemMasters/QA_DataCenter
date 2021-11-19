@@ -3,8 +3,7 @@ const express = require('express');
 const Query = require('../model/dbQuery.js');
 
 const app = express();
-// const port = process.env.PORT || 8080;
-const port = 3000;
+const port = process.env.PORT || 8080;
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
@@ -18,7 +17,8 @@ app.get('/qa/questions/:product_id/:page/:count', async (req, res) => {
     // await Query.getQuestions(product_id, req, res)
     //   .then((results) => {res.send(results); console.log('what is results for APP.get', results)})
     const result = await Query.getQuestions(product_id, req, res);
-    console.log(result);
+    console.log('-----', result);
+    res.send(result)
   } catch(err) {
     console.log(err)
   };
