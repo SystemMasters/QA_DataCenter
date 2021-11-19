@@ -1,7 +1,7 @@
 require('dotenv').config();
 const mysql = require('mysql2');
 
-
+/** USING .promise() to upgrade non-promise connection into a promised connection */
 // const connection = mysql.createConnection({
 //     host: process.env.dbHost,
 //     user: process.env.dbUser,
@@ -16,8 +16,8 @@ const mysql = require('mysql2');
 
 
 const db = async () => {
-  const mysql = require('mysql2/promise');
-  const connection = await mysql.createConnection({
+  const mysqlPromise = require('mysql2/promise');
+  const connection = await mysqlPromise.createConnection({
     host: process.env.dbHost,
     user: process.env.dbUser,
     database: process.env.dbName,
@@ -27,7 +27,7 @@ const db = async () => {
   // console.log(result[0]);
   // return result[0];
   return connection;
-}
+};
 
 // db().then(result =>
 //   result.query('SELECT * FROM Questions limit 3').then(result1 => console.log(result1[0]))
