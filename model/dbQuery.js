@@ -32,15 +32,6 @@ const getAnswers = (question_id, req, res) => {
 };
 
 
-  // answer_id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
-  // questionID INT,
-  // body TEXT NOT NULL,
-  // date BIGINT,
-  // name VARCHAR(50) NOT NULL,
-  // email VARCHAR(50) NOT NULL,
-  // reported BOOLEAN DEFAULT 0 NOT NULL,
-  // helpfulness SMALLINT DEFAULT 0 NOT NULL,
-
 const getPhotos = (answer_id, req, res) => {
   // const sql = `SELECT * FROM photos WHERE answerID = ? LIMIT ? `;
   // const value = [5, 10];
@@ -53,30 +44,59 @@ const getPhotos = (answer_id, req, res) => {
     .catch(err => err);
 };
 
-getPhotos(422911);
+// getPhotos(422911);
 
-
-// photoId INT PRIMARY KEY AUTO_INCREMENT,
-// answerID INT,
-// url VARCHAR(500),
-// FOREIGN KEY(answerID) REFERENCES Answers(answer_id)
-const addQuestion = (productId, req, res) => {
-  // const sql = ``;
-  // const value = [];
-  // return dbConnection.promise().query(sql, value)
-  //          .then(result => console.log(result[0]))
-  //          .catch(err => err);
+const addQuestion = async (req, res) => {
+  const {product_id, body, name, email} = req.body;
+  console.log('what is req body', req.body);
+  const sql = `INSERT INTO questions (productId, questionBody, name, email) VALUES(?, ?, ?, ?)`;
+  const value = [product_id, body, name, email];
+  try {
+    const result = await dbConnection.promise().query(sql, value);
+    console.log('addQuestion Query---', result)
+    return result;
+  } catch(err) {
+    console.log('addQuestion err---', err);
+    return err;
+  };
 };
+
+// question_id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+// productId INT NOT NULL,
+// questionBody TEXT NOT NULL,
+// questionDate BIGINT,
+// name VARCHAR(50) NOT NULL,
+// email VARCHAR(50) NOT NULL,
 
 const addAnswer = () => {
 
+};
+
+const updateQuestionHelpfulness = async (req, res) => {
+  const {question_id} = req.params;
+  console.log('what is req.param', req.params);
+  const sql = `
+    UPDATE questions
+    SET question_helpfulness = question_helpfulness + 1
+    WHERE question_id = ?
+  `;
+  const value = [question_id];
+  try {
+    const result = await dbConnection.promise().query(sql, value);
+    console.log('updateQuestionHelpfulness Query---', result)
+    return result;
+  } catch(err) {
+    console.log('updateQuestionHelpfulness err---', err);
+    return err;
+  };
 };
 
 module.exports = {
   getQuestions,
   getAnswers,
   addQuestion,
-  addAnswer
+  addAnswer,
+  updateQuestionHelpfulness
 };
 
 

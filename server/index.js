@@ -37,15 +37,34 @@ app.get('/qa/questions/:question_id/answers', async (req, res) => {
 });
 
 app.post('/qa/questions', async (req, res) => {
-  const {body} = req;
   try {
-    const addQuestion = await Query.addQuestion(body.product_id, req, res);
-    console.log('-----addQuestion', addQuestion);
-    res.send('Thank you for adding a question');
+    const posted = await Query.addQuestion(req, res);
+    res.status(201).send('Thank you for adding a question');
   } catch(err) {
     console.log('err from getAnswers route', err)
+    res.status(500).send(err)
   }
 })
+
+app.put('/qa/questions/:question_id/helpful', async (req, res) => {
+  try{
+    const updated = await Query.updateQuestionHelpfulness(req, res);
+    console.log('what is updated', updated)
+    res.status(204).send('Question helpfulness is updated')
+    //204 is no content
+  } catch(err) {
+    console.log('what is the put err', err)
+    res.status(500).send(err);
+  }
+})
+
+
+
+
+
+
+
+
 
 
 app.listen(port, () => {
