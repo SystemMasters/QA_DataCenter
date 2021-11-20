@@ -3,8 +3,10 @@ const express = require('express');
 const Query = require('../model/dbQuery.js');
 
 const app = express();
-// const port = process.env.PORT || 8080;
-const port = 3000;
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
+
+const port = process.env.PORT || 8080;
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
@@ -15,18 +17,36 @@ app.get('/', (req, res) => {
 app.get('/qa/questions/:product_id/:page/:count', async (req, res) => {
   const {product_id} = req.params;
   try {
-    // await Query.getQuestions(product_id, req, res)
-    //   .then((results) => {res.send(results); console.log('what is results for APP.get', results)})
-    const result = await Query.getQuestions(product_id, req, res);
-    console.log(result);
+    const questionList = await Query.getQuestions(product_id, req, res);
+    console.log('-----QuestionList', questionList);
+    res.send(questionList);
   } catch(err) {
     console.log(err)
   };
 });
 
-app.get('/qa/questions/:question_id/answers', (req, res) => {
-
+app.get('/qa/questions/:question_id/answers', async (req, res) => {
+  const {question_id} = req.params;
+  try {
+    const answerList = await Query.getAnswers(question_id, req, res);
+    console.log('-----answerList', answerList);
+    res.send(answerList);
+  } catch(err) {
+    console.log('err from getAnswers route', err)
+  }
 });
+
+app.post('/qa/questions', async (req, res) => {
+  const {body} = req;
+  try {
+    const addQuestion = await Query.addQuestion(body.product_id, req, res);
+    console.log('-----addQuestion', addQuestion);
+    res.send('Thank you for adding a question');
+  } catch(err) {
+    console.log('err from getAnswers route', err)
+  }
+})
+
 
 app.listen(port, () => {
   console.log(`QA_Database listening at http://localhost:${port}`);
