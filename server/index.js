@@ -36,6 +36,18 @@ app.get('/qa/questions/:question_id/answers', async (req, res) => {
   }
 });
 
+app.post('/qa/questions', async (req, res) => {
+  const {body} = req;
+  try {
+    const addQuestion = await Query.addQuestion(body.product_id, req, res);
+    console.log('-----addQuestion', addQuestion);
+    res.send('Thank you for adding a question');
+  } catch(err) {
+    console.log('err from getAnswers route', err)
+  }
+})
+
+
 app.listen(port, () => {
   console.log(`QA_Database listening at http://localhost:${port}`);
 });
