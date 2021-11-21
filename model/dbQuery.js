@@ -5,7 +5,7 @@ const getQuestions = (req, res) => {
   //TO DO: figure out how to add defaults for page and count
   const sql = `
     SELECT q.*,
-      JSON_OBJECT('a.answer_id placeholder', JSON_OBJECT('id', a.answer_id, 'body', a.body, 'date', a.date, 'answerer_name', a.name, 'helpfulness', a.helpfulness,
+      JSON_OBJECT('a.answer_id', JSON_OBJECT('id', a.answer_id, 'body', a.body, 'date', a.date, 'answerer_name', a.name, 'helpfulness', a.helpfulness,
       'photos', JSON_ARRAY(JSON_OBJECT('id', p.photoId, 'url', p.url))))
       AS answers
     FROM questions AS q
@@ -15,6 +15,7 @@ const getQuestions = (req, res) => {
     ON a.answer_id = p.answerID
     WHERE q.productId = ?
   `;
+  // JSON_OBJECT() this return a empty object;
   const value = [product_id];
   return dbConnection.promise().query(sql, value)
            .then(result => result[0])
