@@ -26,14 +26,22 @@ const getQuestions = (req, res) => {
 
 const getAnswers = (question_id, req, res) => {
   // const sql = `
-  //   SELECT a.answer_id, a.body, a.questionID, a.date, a.name, a.email, a.reported, a.helpfulness, p.photoId, p.url
+  //   SELECT a.*, JSON_ARRAY(JSON_OBJECT('id', p.photoId, 'url', p.url)) AS photos
   //   FROM answers AS a
   //   LEFT JOIN photos AS p
   //   ON a.answer_id = p.answerId
   //   WHERE a.questionID=${question_id};
   // `;
+  // THEN (a.*, JSON_ARRAY(JSON_OBJECT('id', p.photoId, 'url', p.url)))
+  // ELSE (a.*, JSON_ARRAY())
   const sql = `
-    SELECT a.*, JSON_ARRAY(JSON_OBJECT('id', p.photoId, 'url', p.url)) AS photos
+    SELECT a.*,
+    CASE
+    WHEN p.photoId
+    THEN (JSON_ARRAY(JSON_OBJECT('id', p.photoId, 'url', p.url)))
+    ELSE (JSON_ARRAY())
+    END
+    AS photos
     FROM answers AS a
     LEFT JOIN photos AS p
     ON a.answer_id = p.answerId
@@ -47,12 +55,7 @@ const getAnswers = (question_id, req, res) => {
 
 
 const getPhotos = (answer_id, req, res) => {
-  // const sql = `SELECT * FROM photos WHERE answerID = ? LIMIT ? `;
-  // const value = [5, 10];
-  // return dbConnection.promise().query(sql, value)
-  // .then(result => console.log(result[0]))
-  // .catch(err => err);
-  const sql = `SELECT JSON_OBJECT ('id', photoId, 'url', url) FROM photos WHERE answerId = ${answer_id} `;
+  const sql = `SELECT JSON_OBJECT ('id', photoId, 'url', url) FROM photos WHERE answerId = ${answer_id}`;
   return dbConnection.promise().query(sql)
     .then(result => console.log(Object.values(result[0][0])))
     .catch(err => err);

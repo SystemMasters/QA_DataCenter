@@ -51,6 +51,7 @@ CREATE TABLE Photos (
 --LOAD DATA LOCAL INFILE '/Users/junma/Desktop/SDC/questions.csv'INTO TABLE Questions FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' IGNORE 1 ROWS;
 --LOAD DATA LOCAL INFILE '/Users/junma/Desktop/SDC/answers.csv'INTO TABLE Answers FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' IGNORE 1 ROWS;
 --LOAD DATA LOCAL INFILE '/Users/junma/Desktop/SDC/answers_photos.csv'INTO TABLE Photos FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' IGNORE 1 ROWS;
+--CREATE INDEX idx_productId ON questions (productId)
 
 
 /* one photo can only refer to one answer */
