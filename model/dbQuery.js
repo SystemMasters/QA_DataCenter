@@ -3,11 +3,37 @@ const dbConnection = require('../db/dbConnection.js');
 const getQuestions = (req, res) => {
   const {product_id, page, count} = req.params;
   //TO DO: figure out how to add defaults for page and count
+  // const sql = `
+  //   SELECT q.*,
+  //     JSON_OBJECT('a.answer_id', JSON_OBJECT('id', a.answer_id, 'body', a.body, 'date', a.date, 'answerer_name', a.name, 'helpfulness', a.helpfulness,
+  //     'photos', JSON_ARRAY(JSON_OBJECT('id', p.photoId, 'url', p.url))))
+  //     AS answers
+
+  //   FROM questions AS q
+  //   LEFT JOIN answers AS a
+  //   ON q.question_id = a.questionID
+  //   LEFT JOIN photos AS p
+  //   ON a.answer_id = p.answerID
+  //   WHERE q.productId = ?
+  // `;
   const sql = `
     SELECT q.*,
-      JSON_OBJECT('a.answer_id', JSON_OBJECT('id', a.answer_id, 'body', a.body, 'date', a.date, 'answerer_name', a.name, 'helpfulness', a.helpfulness,
-      'photos', JSON_ARRAY(JSON_OBJECT('id', p.photoId, 'url', p.url))))
-      AS answers
+    CASE
+    WHEN a.answer_id
+    THEN JSON_OBJECT(a.answer_id,
+      JSON_OBJECT('id', a.answer_id, 'body', a.body, 'date', a.date, 'answerer_name', a.name, 'helpfulness', a.helpfulness,
+      'photos',
+        CASE
+        WHEN p.photoId
+        THEN JSON_ARRAY(JSON_OBJECT('id', p.photoId, 'url', p.url))
+        ELSE JSON_ARRAY()
+        END
+      )
+    )
+    ELSE JSON_OBJECT()
+    END
+    AS answers
+
     FROM questions AS q
     LEFT JOIN answers AS a
     ON q.question_id = a.questionID
@@ -25,23 +51,13 @@ const getQuestions = (req, res) => {
 // getQuestions();
 
 const getAnswers = (question_id, req, res) => {
-  // const sql = `
-  //   SELECT a.*, JSON_ARRAY(JSON_OBJECT('id', p.photoId, 'url', p.url)) AS photos
-  //   FROM answers AS a
-  //   LEFT JOIN photos AS p
-  //   ON a.answer_id = p.answerId
-  //   WHERE a.questionID=${question_id};
-  // `;
-  // THEN (a.*, JSON_ARRAY(JSON_OBJECT('id', p.photoId, 'url', p.url)))
-  // ELSE (a.*, JSON_ARRAY())
   const sql = `
     SELECT a.*,
     CASE
     WHEN p.photoId
     THEN (JSON_ARRAY(JSON_OBJECT('id', p.photoId, 'url', p.url)))
     ELSE (JSON_ARRAY())
-    END
-    AS photos
+    END AS photos
     FROM answers AS a
     LEFT JOIN photos AS p
     ON a.answer_id = p.answerId
