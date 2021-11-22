@@ -4,9 +4,8 @@
   "description": "Database for questions and answers module",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server/index.js",
-    "test:jest ": "jest"
+    "test": "jest --coverage"
   },
   "jest": {
     "testEnvironment": "node"

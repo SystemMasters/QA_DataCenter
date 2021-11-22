@@ -56,15 +56,8 @@ app.put('/qa/questions/:question_id/helpful', async (req, res) => {
   }
 })
 
-
-
-
-
-
-
-
-
-
 app.listen(port, () => {
   console.log(`QA_Database listening at http://localhost:${port}`);
 });
+
+module.exports = app;
