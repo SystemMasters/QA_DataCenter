@@ -15,6 +15,7 @@ describe("Get /qa/questions/:product_id/:page/:count", () => {
       })
   });
 });
+
 describe("Get /qa/questions/:question_id/answers", () => {
   it("should get all answers from the question_id", async () => {
     await supertest(app)

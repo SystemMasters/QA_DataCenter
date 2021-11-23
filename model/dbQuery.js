@@ -4,20 +4,21 @@ const getQuestions = (req, res) => {
   const {product_id, page, count} = req.params;
   const sql = `
     SELECT q.*,
-    CASE
-    WHEN a.answer_id
-    THEN JSON_OBJECT(a.answer_id,
-      JSON_OBJECT('id', a.answer_id, 'body', a.body, 'date', a.date, 'answerer_name', a.name, 'helpfulness', a.helpfulness,
-      'photos',
-        CASE
-        WHEN p.photoId
-        THEN JSON_ARRAY(JSON_OBJECT('id', p.photoId, 'url', p.url))
-        ELSE JSON_ARRAY()
-        END
-      )
-    )
-    ELSE JSON_OBJECT()
-    END
+      CASE
+        WHEN a.answer_id
+        THEN JSON_OBJECT(a.answer_id,
+          JSON_OBJECT('id', a.answer_id, 'body', a.body, 'date', a.date, 'answerer_name',
+          a.answerer_name, 'helpfulness', a.helpfulness,
+          'photos',
+            CASE
+              WHEN p.photoId
+              THEN JSON_ARRAY(JSON_OBJECT('id', p.photoId, 'url', p.url))
+              ELSE JSON_ARRAY()
+            END
+          )
+        )
+        ELSE JSON_OBJECT()
+      END
     AS answers
     FROM questions AS q
     LEFT JOIN answers AS a
@@ -26,7 +27,6 @@ const getQuestions = (req, res) => {
     ON a.answer_id = p.answerID
     WHERE q.productId = ?
   `;
-  // JSON_OBJECT() this return a empty object;
   const value = [product_id];
   return dbConnection.promise().query(sql, value)
            .then(result => result[0])
@@ -38,11 +38,11 @@ const getQuestions = (req, res) => {
 const getAnswers = (question_id, req, res) => {
   const sql = `
     SELECT a.*,
-    CASE
-    WHEN p.photoId
-    THEN (JSON_ARRAY(JSON_OBJECT('id', p.photoId, 'url', p.url)))
-    ELSE (JSON_ARRAY())
-    END AS photos
+      CASE
+        WHEN p.photoId
+        THEN (JSON_ARRAY(JSON_OBJECT('id', p.photoId, 'url', p.url)))
+        ELSE (JSON_ARRAY())
+      END AS photos
     FROM answers AS a
     LEFT JOIN photos AS p
     ON a.answer_id = p.answerId
@@ -67,7 +67,7 @@ const getPhotos = (answer_id, req, res) => {
 const addQuestion = async (req, res) => {
   const {product_id, body, name, email} = req.body;
   console.log('what is req body', req.body);
-  const sql = `INSERT INTO questions (productId, questionBody, name, email) VALUES(?, ?, ?, ?)`;
+  const sql = `INSERT INTO questions (productId, question_body, asker_name, email) VALUES(?, ?, ?, ?)`;
   const value = [product_id, body, name, email];
   try {
     const result = await dbConnection.promise().query(sql, value);
