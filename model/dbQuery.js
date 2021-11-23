@@ -28,12 +28,10 @@ const getQuestions = (req, res) => {
     WHERE q.productId = ?
   `;
   const value = [product_id];
-  return dbConnection.promise().query(sql, value)
+  return dbConnection.promise().execute(sql, value)
            .then(result => result[0])
            .catch(err => err);
 };
-// SELECT * FROM questions WHERE productId = ? LIMIT ?
-// getQuestions();
 
 const getAnswers = (question_id, req, res) => {
   const sql = `
@@ -49,20 +47,17 @@ const getAnswers = (question_id, req, res) => {
     WHERE a.questionID=${question_id};
   `;
   const value = [question_id, 10];
-  return dbConnection.promise().query(sql)
+  return dbConnection.promise().execute(sql)
            .then(result => result[0])
            .catch(err => err);
 };
 
-
 const getPhotos = (answer_id, req, res) => {
   const sql = `SELECT JSON_OBJECT ('id', photoId, 'url', url) FROM photos WHERE answerId = ${answer_id}`;
-  return dbConnection.promise().query(sql)
+  return dbConnection.promise().execute(sql)
     .then(result => console.log(Object.values(result[0][0])))
     .catch(err => err);
 };
-
-// getPhotos(422911);
 
 const addQuestion = async (req, res) => {
   const {product_id, body, name, email} = req.body;
@@ -70,18 +65,13 @@ const addQuestion = async (req, res) => {
   const sql = `INSERT INTO questions (productId, question_body, asker_name, email) VALUES(?, ?, ?, ?)`;
   const value = [product_id, body, name, email];
   try {
-    const result = await dbConnection.promise().query(sql, value);
-    console.log('addQuestion Query---', result)
+    const result = await dbConnection.promise().execute(sql, value);
+    console.log('addQuestion Query--- success', result)
     return result;
   } catch(err) {
     console.log('addQuestion err---', err);
     return err;
   };
-};
-
-
-const addAnswer = () => {
-
 };
 
 const updateQuestionHelpfulness = async (req, res) => {
@@ -94,7 +84,7 @@ const updateQuestionHelpfulness = async (req, res) => {
   `;
   const value = [question_id];
   try {
-    const result = await dbConnection.promise().query(sql, value);
+    const result = await dbConnection.promise().execute(sql, value);
     console.log('updateQuestionHelpfulness Query---', result)
     return result;
     // res.status(200).send('thank you')
@@ -108,16 +98,5 @@ module.exports = {
   getQuestions,
   getAnswers,
   addQuestion,
-  addAnswer,
   updateQuestionHelpfulness
 };
-
-
-// const getQuestions = (productId) => {
-//   const sql = `select * from questions where productId=${productId} limit 5`;
-//   return db().then(connection => {
-//    return connection.query(sql)
-//       .then(res => res[0])
-//       .catch(err => console.log('getQuestions err', err))
-//   });
-// }

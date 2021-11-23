@@ -64,6 +64,9 @@ CREATE TABLE Photos (
 
  /*----------------CREATE INDEX--------------------*/
  --CREATE INDEX idx_productId ON questions (productId)
+ --CREATE INDEX idx_questionID ON answers (questionID)
+ --CREATE INDEX idx_answerID ON photos (answerID)
+
 
 
 
