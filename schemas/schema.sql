@@ -62,7 +62,7 @@ CREATE TABLE Photos (
  --LOAD DATA LOCAL INFILE '/Users/junma/Desktop/SDC/answers_photos.csv'INTO TABLE Photos FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n' IGNORE 1 ROWS;
 
 
- /*----------------Terminal Command to CREATE INDEX--------------------*/
+ /*----------------CREATE INDEX--------------------*/
  --CREATE INDEX idx_productId ON questions (productId)
 
 
