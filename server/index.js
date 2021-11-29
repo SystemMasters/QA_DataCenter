@@ -7,9 +7,10 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
 const port = process.env.PORT || 8080;
+// const port = 3306;
 
 app.get('/', (req, res) => {
-  res.send('Hello World!');
+  res.send('Hello World!ddddddd');
 });
 
 app.get('/qa/questions/:product_id/:page/:count', async (req, res) => {

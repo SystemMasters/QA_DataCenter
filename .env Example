@@ -1,0 +1,7 @@
+PORT = 3000
+
+#DATABASE CONNECTION ENVIRONMENT VARIABLES
+dbHost = 'Your host name'
+dbUser = 'Your user name'
+dbName = 'Your database name'
+dbPassword = 'Your password'
