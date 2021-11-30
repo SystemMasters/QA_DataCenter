@@ -10,16 +10,15 @@ const port = process.env.PORT || 8080;
 // const port = 3306;
 
 app.get('/', (req, res) => {
-  res.send('Hello World!ddddddd');
+  res.send('Hello World!');
 });
 
 app.get('/qa/questions/:product_id/:page/:count', async (req, res) => {
   try {
     const questionList = await Query.getQuestions(req, res);
-    console.log('-----QuestionList', questionList);
-    res.send(questionList);
+    res.status(200).send(questionList);
   } catch(err) {
-    console.log(err)
+    res.status(500).send(err);
   };
 });
 
@@ -27,10 +26,9 @@ app.get('/qa/questions/:question_id/answers', async (req, res) => {
   const {question_id} = req.params;
   try {
     const answerList = await Query.getAnswers(question_id, req, res);
-    console.log('-----answerList', answerList);
-    res.send(answerList);
+    res.status(200).send(answerList);
   } catch(err) {
-    console.log('err from getAnswers route', err)
+    res.status(500).send(err);
   }
 });
 
@@ -39,20 +37,15 @@ app.post('/qa/questions', async (req, res) => {
     const posted = await Query.addQuestion(req, res);
     res.status(201).send('Thank you for adding a question');
   } catch(err) {
-    console.log('err from getAnswers route', err)
-    res.status(500).send(err)
+    res.status(500).send(err);
   }
 })
 
 app.put('/qa/questions/:question_id/helpful', async (req, res) => {
   try{
     const updated = await Query.updateQuestionHelpfulness(req, res);
-    console.log('what is updated', updated)
     res.status(204).send('Question helpfulness is updated')
-    //204 is no content
-    // await Query.updateQuestionHelpfulness(req, res);
   } catch(err) {
-    console.log('what is the put err', err)
     res.status(500).send(err);
   }
 })

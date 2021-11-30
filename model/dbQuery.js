@@ -55,28 +55,24 @@ const getAnswers = (question_id, req, res) => {
 const getPhotos = (answer_id, req, res) => {
   const sql = `SELECT JSON_OBJECT ('id', photoId, 'url', url) FROM photos WHERE answerId = ${answer_id}`;
   return dbConnection.promise().execute(sql)
-    .then(result => console.log(Object.values(result[0][0])))
+    .then(result => Object.values(result[0][0]))
     .catch(err => err);
 };
 
 const addQuestion = async (req, res) => {
   const {product_id, body, name, email} = req.body;
-  console.log('what is req body', req.body);
   const sql = `INSERT INTO questions (productId, question_body, asker_name, email) VALUES(?, ?, ?, ?)`;
   const value = [product_id, body, name, email];
   try {
     const result = await dbConnection.promise().execute(sql, value);
-    console.log('addQuestion Query--- success', result)
     return result;
   } catch(err) {
-    console.log('addQuestion err---', err);
     return err;
   };
 };
 
 const updateQuestionHelpfulness = async (req, res) => {
   const {question_id} = req.params;
-  console.log('what is req.param', req.params);
   const sql = `
     UPDATE questions
     SET question_helpfulness = question_helpfulness + 1
@@ -85,11 +81,8 @@ const updateQuestionHelpfulness = async (req, res) => {
   const value = [question_id];
   try {
     const result = await dbConnection.promise().execute(sql, value);
-    console.log('updateQuestionHelpfulness Query---', result)
     return result;
-    // res.status(200).send('thank you')
   } catch(err) {
-    console.log('updateQuestionHelpfulness err---', err);
     return err;
   };
 };
