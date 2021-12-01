@@ -20,10 +20,10 @@ const getQuestions = (req, res) => {
         ELSE JSON_OBJECT()
       END
     AS answers
-    FROM questions AS q
-    LEFT JOIN answers AS a
+    FROM Questions AS q
+    LEFT JOIN Answers AS a
     ON q.question_id = a.questionID
-    LEFT JOIN photos AS p
+    LEFT JOIN Photos AS p
     ON a.answer_id = p.answerID
     WHERE q.productId = ?
   `;
@@ -41,8 +41,8 @@ const getAnswers = (question_id, req, res) => {
         THEN (JSON_ARRAY(JSON_OBJECT('id', p.photoId, 'url', p.url)))
         ELSE (JSON_ARRAY())
       END AS photos
-    FROM answers AS a
-    LEFT JOIN photos AS p
+    FROM Answers AS a
+    LEFT JOIN Photos AS p
     ON a.answer_id = p.answerId
     WHERE a.questionID=${question_id};
   `;
@@ -53,7 +53,7 @@ const getAnswers = (question_id, req, res) => {
 };
 
 const getPhotos = (answer_id, req, res) => {
-  const sql = `SELECT JSON_OBJECT ('id', photoId, 'url', url) FROM photos WHERE answerId = ${answer_id}`;
+  const sql = `SELECT JSON_OBJECT ('id', photoId, 'url', url) FROM Photos WHERE answerId = ${answer_id}`;
   return dbConnection.promise().execute(sql)
     .then(result => Object.values(result[0][0]))
     .catch(err => err);
@@ -61,7 +61,7 @@ const getPhotos = (answer_id, req, res) => {
 
 const addQuestion = async (req, res) => {
   const {product_id, body, name, email} = req.body;
-  const sql = `INSERT INTO questions (productId, question_body, asker_name, email) VALUES(?, ?, ?, ?)`;
+  const sql = `INSERT INTO Questions (productId, question_body, asker_name, email) VALUES(?, ?, ?, ?)`;
   const value = [product_id, body, name, email];
   try {
     const result = await dbConnection.promise().execute(sql, value);
@@ -74,7 +74,7 @@ const addQuestion = async (req, res) => {
 const updateQuestionHelpfulness = async (req, res) => {
   const {question_id} = req.params;
   const sql = `
-    UPDATE questions
+    UPDATE Questions
     SET question_helpfulness = question_helpfulness + 1
     WHERE question_id = ?
   `;
