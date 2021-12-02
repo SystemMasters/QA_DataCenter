@@ -13,11 +13,6 @@ app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
-// loader.io verification
-app.get('/loaderio-9ff5e4986a8fff952d99fdf0e4bb49bf.txt', (req, res) => {
-  res.send('loaderio-9ff5e4986a8fff952d99fdf0e4bb49bf');
-});
-
 app.get('/qa/questions/:product_id/:page/:count', async (req, res) => {
   try {
     const questionList = await Query.getQuestions(req, res);
