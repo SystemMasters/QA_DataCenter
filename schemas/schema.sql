@@ -68,8 +68,6 @@ CREATE TABLE Photos (
  --CREATE INDEX idx_answerID ON photos (answerID)
 
 
-
-
  /*  Execute this file from the command line by typing:
   *    mysql -u root < schemas/schema.sql
   *  to create the database and the tables.*/

@@ -7,7 +7,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
 const port = process.env.PORT || 8080;
-// const port = 3306;
+
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
@@ -38,17 +38,17 @@ app.post('/qa/questions', async (req, res) => {
     res.status(201).send('Thank you for adding a question');
   } catch(err) {
     res.status(500).send(err);
-  }
-})
+  };
+});
 
 app.put('/qa/questions/:question_id/helpful', async (req, res) => {
   try{
     const updated = await Query.updateQuestionHelpfulness(req, res);
-    res.status(204).send('Question helpfulness is updated')
+    res.status(204).send('Question helpfulness is updated');
   } catch(err) {
     res.status(500).send(err);
-  }
-})
+  };
+});
 
 app.listen(port, () => {
   console.log(`QA_Database listening at http://localhost:${port}`);

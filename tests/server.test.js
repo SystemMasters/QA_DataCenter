@@ -42,8 +42,7 @@ describe("Post /qa/questions", () => {
       .send(testingData)
       .expect(201)
       .then (async (response) => {
-        // expect(response.body.name).toBe(testingData.name)
-      })
+      });
   });
 });
 
