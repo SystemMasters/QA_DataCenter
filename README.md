@@ -48,7 +48,7 @@ Open `http://localhost:8080`
 - [Node.js](https://nodejs.org)
 - [Express](http://expressjs.com/)
 - [MySQL](https://www.mysql.com/)
-- [AWS EC2)](https://aws.amazon.com/console/)
+- [AWS (EC2)](https://aws.amazon.com/console/)
 - [Loader.io](https://loader.io/)
 - [K6](https://k6.io/)
 
